@@ -1,0 +1,22 @@
+.main_div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.flag_img_div{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 300px;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+}
+
+.flag_img{
+    height:200px;
+    width:200px
+}
