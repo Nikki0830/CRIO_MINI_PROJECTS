@@ -1,0 +1,111 @@
+/* Fullscreen gradient background */
+.fomm_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    font-family: "Poppins", sans-serif;
+    color: white;
+  }
+  
+  /* Form container */
+  .name_form {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Input fields */
+  input {
+    width: 250px;
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Input focus effect */
+  input:focus {
+    outline: none;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6);
+  }
+  
+  /* Labels */
+  label {
+    font-weight: bold;
+    font-size: 18px;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  /* Button styles */
+  button {
+    background: #ff7eb3;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background: #ff5c97;
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.4);
+  }
+  
+  /* Button disabled state */
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Full name display */
+  p {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+    animation: slideIn 0.8s ease-in-out;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
