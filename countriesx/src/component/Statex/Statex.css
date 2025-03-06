@@ -1,0 +1,74 @@
+/* Main container */
+.main_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+/* Heading */
+.select_heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdowns styling */
+select {
+  width: 250px;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  font-size: 16px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+select:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+select:hover {
+  transform: scale(1.05);
+}
+
+/* Selection display */
+.All_thingsTogeter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.All_thingsTogeter p {
+  font-size: 18px;
+  color: #ddd;
+  margin: 0;
+}
+
+.text_country {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+}
+
+.text_country p {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}

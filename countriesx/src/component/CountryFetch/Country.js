@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 function Country() {
   const [data, setData] = useState([]);
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
     fetch("https://xcountries-backend.azurewebsites.net/all")
       .then((response) => response.json())
