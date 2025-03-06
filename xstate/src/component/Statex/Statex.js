@@ -273,14 +273,16 @@ function Statex() {
         </select>
       </div>
 
-      {/* Display Selected Location */}
-      {selectedCity && (
-        <div className="location_display">
-          <span className="selected_country"><p>You selected</p>{selectedCountry}</span>,
-          <span className="selected_state">{selectedState}</span>,
-          <span className="selected_city">{selectedCity}</span>
-        </div>
-      )}
+  {/* Display Selected Location */}
+{selectedCity && selectedState && selectedCountry && (
+  <div className="location_display">
+    <span className="selected_label">You selected </span>
+    <span className="selected_country">{selectedCountry}</span>
+    <span className="selected_state">{selectedState}, </span>
+    <span className="selected_city">{selectedCity}, </span>
+
+  </div>
+)}
     </div>
   );
 }
