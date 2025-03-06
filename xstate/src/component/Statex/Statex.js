@@ -105,9 +105,9 @@
 
 //         {/* Why value="" is Necessary?
 //  Acts as a default placeholder option
-// When no city is selected, 
-// this empty value ensures that 
-// the dropdown does not auto-select an 
+// When no city is selected,
+// this empty value ensures that
+// the dropdown does not auto-select an
 // invalid city. */}
 //         {cities.map((city) => (
 //           <option key={city} value={city}>
@@ -151,35 +151,74 @@ function Statex() {
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    fetch("https://crio-location-selector.onrender.com/countries")
-      .then((response) => response.json())
-      .then((data) => setCountries(data))
-      .catch((error) => console.error("Error fetching countries:", error));
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch(
+          "https://crio-location-selector.onrender.com/countries"
+        );
+        if (!response.ok) throw new Error("Failed to fetch countries");
+        const data = await response.json();
+        setCountries(data);
+      } catch (error) {
+        setError("Error fetching countries");
+        console.error(error);
+      }
+    };
+
+    fetchCountries();
   }, []);
 
   useEffect(() => {
     if (!selectedCountry) return;
-    fetch(`https://crio-location-selector.onrender.com/country=${selectedCountry}/states`)
-      .then((response) => response.json())
-      .then((data) => setStates(data))
-      .catch((error) => console.error("Error fetching states:", error));
+    const fetchStates = async () => {
+      try {
+        const response = await fetch(
+          `https://crio-location-selector.onrender.com/country=${selectedCountry}/states`
+        );
+        if (!response.ok) throw new Error("Failed to fetch states");
+        const data = await response.json();
+        setStates(data);
+      } catch (error) {
+        setError("Error fetching states");
+        console.error(error);
+      }
+    };
+
+    fetchStates();
   }, [selectedCountry]);
 
   useEffect(() => {
     if (!selectedState) return;
-    fetch(`https://crio-location-selector.onrender.com/country=${selectedCountry}/state=${selectedState}/cities`)
-      .then((response) => response.json())
-      .then((data) => setCities(data))
-      .catch((error) => console.error("Error fetching cities:", error));
+    const fetchCities = async () => {
+      try {
+        const response = await fetch(
+          `https://crio-location-selector.onrender.com/country=${selectedCountry}/state=${selectedState}/cities`
+        );
+        if (!response.ok) throw new Error("Failed to fetch cities");
+        const data = await response.json();
+        setCities(data);
+      } catch (error) {
+        setError("Error fetching cities");
+        console.error(error);
+      }
+    };
+
+    fetchCities();
   }, [selectedState]);
 
   return (
     <div className="main_div">
       <h2 className="select_heading">Select Location</h2>
+
+      {error && <p className="error_message">{error}</p>}
+
       <div className="select_container">
+        {/* Country Dropdown */}
         <select
-          className="country_select"
+          className="dropdown"
           value={selectedCountry}
           onChange={(e) => {
             setSelectedCountry(e.target.value);
@@ -187,6 +226,7 @@ function Statex() {
             setSelectedCity("");
             setStates([]);
             setCities([]);
+            setError(null);
           }}
         >
           <option value="">Select Country</option>
@@ -196,13 +236,16 @@ function Statex() {
             </option>
           ))}
         </select>
+
+        {/* State Dropdown */}
         <select
-          className="state_select"
+          className="dropdown"
           value={selectedState}
           onChange={(e) => {
             setSelectedState(e.target.value);
             setSelectedCity("");
             setCities([]);
+            setError(null);
           }}
           disabled={!selectedCountry}
         >
@@ -213,8 +256,10 @@ function Statex() {
             </option>
           ))}
         </select>
+
+        {/* City Dropdown */}
         <select
-          className="city_select"
+          className="dropdown"
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
           disabled={!selectedState}
@@ -227,16 +272,16 @@ function Statex() {
           ))}
         </select>
       </div>
+
+      {/* Display Selected Location */}
       {selectedCity && (
-        <div className="All_thingsTogeter">
-          <span className="text_country"><p>You selected</p>{selectedCountry},</span>
-          <span className="text_state">{selectedState},</span>
-          <span className="text_city">{selectedCity}</span>
+        <div className="location_display">
+          <span className="selected_country"><p>You selected</p>{selectedCountry}</span>,
+          <span className="selected_state">{selectedState}</span>,
+          <span className="selected_city">{selectedCity}</span>
         </div>
       )}
     </div>
   );
 }
-
 export default Statex;
-
