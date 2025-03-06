@@ -74,13 +74,17 @@ function Statex() {
       {/* STATE SELECT */}
       <select
         className="state_select"
-        value={states}
+        value={selectedState}
         onChange={(e) => {
           setselectedState(e.target.value);
           setselectedCity(""); //Reset city selection
           setCities([]);
         }}
         disabled={!selectedCountry}
+        // The disabled={!selectedCountry} in the <select> element ensures that the State dropdown is disabled until a country is 
+        // selected. Here's why it's needed:
+        // 🔹 How it Works
+        // /!selectedCountry means if no country is selected (empty string, null, or undefined), the dropdown will be disabled.
       >
         <option value="">Select State</option>
         {states.map((state) => (
