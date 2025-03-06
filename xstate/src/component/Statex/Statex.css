@@ -53,6 +53,7 @@ select:hover {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  flex-wrap: wrap;
 }
 
 .All_thingsTogeter p {
@@ -65,10 +66,13 @@ select:hover {
   font-size: 26px;
   font-weight: bold;
   color: white;
+  display: inline;
 }
 
 .text_country p {
   font-size: 20px;
   font-weight: bold;
   color: white;
+  display: inline;
+  margin-right: 5px;
 }
