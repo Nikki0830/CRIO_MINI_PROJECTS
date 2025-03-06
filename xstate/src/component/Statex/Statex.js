@@ -11,13 +11,13 @@ function Statex() {
   const [selectedCity, setselectedCity] = useState("");
 
   const countryFetch = "https://crio-location-selector.onrender.com/countries";
-  const stateFetch = `https://crio-location-selector.onrender.com/country=${selectedCountry}/states`;
-  const cityFetch = `https://crio-location-selector.onrender.com/country=${selectedCountry}/state=${selectedState}/cities`;
+  const stateFetch = `https://crio-location-selector.onrender.com/country=${selectedCountry}/states`
+  const cityFetch = `https://crio-location-selector.onrender.com/country=${selectedCountry}/state=${selectedState}/cities`
 
   useEffect(() => {
     fetch(countryFetch)
       .then((response) => response.json())
-      .then((data) => setCountries(data))
+      .then((data) => setCountries(data || []))
 
       .catch((error) => console.error("Error fetching countries:", error));
   }, []);
@@ -31,7 +31,8 @@ function Statex() {
     if (!selectedCountry) return;
     fetch(stateFetch)
       .then((response) => response.json())
-      .then((data) => setStates(data))
+      .then((data) => setStates(data || []))
+      //Add a check fo an empty response
       .catch((error) => console.error("Error fetching states", error));
   }, [selectedCountry]);
   console.log(states);
@@ -81,7 +82,7 @@ function Statex() {
           setCities([]);
         }}
         disabled={!selectedCountry}
-        // The disabled={!selectedCountry} in the <select> element ensures that the State dropdown is disabled until a country is 
+        // The disabled={!selectedCountry} in the <select> element ensures that the State dropdown is disabled until a country is
         // selected. Here's why it's needed:
         // 🔹 How it Works
         // /!selectedCountry means if no country is selected (empty string, null, or undefined), the dropdown will be disabled.
@@ -95,7 +96,7 @@ function Statex() {
       </select>
       {/* CITY SELECT */}
       <select
-        classname="city_select"
+        className="city_select"
         value={selectedCity}
         onChange={(e) => setselectedCity(e.target.value)}
         disabled={!selectedState}
