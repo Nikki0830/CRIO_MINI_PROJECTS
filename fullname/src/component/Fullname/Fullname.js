@@ -45,7 +45,7 @@ function Fullname() {
 
         <button
           type="submit"
-          disabled={!firstName.trim() || !secondName.trim()}
+        //   disabled={!firstName.trim() || !secondName.trim()}
         >
           Submit
         </button>
