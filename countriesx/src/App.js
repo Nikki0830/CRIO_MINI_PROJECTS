@@ -1,13 +1,13 @@
 
 import './App.css';
-// import Country from './component/CountryFetch/Country';
-import Statex from './component/Statex/Statex';
+import Country from './component/CountryFetch/Country';
+// import Statex from './component/Statex/Statex';
 
 function App() {
   return (
     <div className="App">
-     {/* <Country/> */}
-     <Statex/>
+     <Country/>
+     {/* <Statex/> */}
     </div>
   );
 }
