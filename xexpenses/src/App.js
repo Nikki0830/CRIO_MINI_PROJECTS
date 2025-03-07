@@ -1,16 +1,14 @@
-// App.js
-import React from 'react'
-import ExpenseTracker from './component/ExpenseTracker'
+import Home from "./pages/Home/Home";
+import { SnackbarProvider } from "notistack";
 
 function App() {
   return (
-    <div>
-      <ExpenseTracker/>
-    </div>
-  )
+    <SnackbarProvider>
+      <Home />
+    </SnackbarProvider>
+  );
 }
 
-export default App
-
+export default App;
 
 
