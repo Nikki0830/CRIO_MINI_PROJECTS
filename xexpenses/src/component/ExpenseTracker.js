@@ -248,6 +248,7 @@ const ExpenseTracker = () => {
         sx={{ bgcolor: "#2E2E2E", borderRadius: 2, p: 4, boxShadow: 2, mt: 1 }}
       >
         <Pie data={pieData} />
+        {/* <Pie data={pieData} /> */}
       </Box>
 
       <Typography
