@@ -11,7 +11,7 @@ import "./component/Styles.css";
 const App = () => {
   const [walletBalance, setWalletBalance] = useState(() => {
     const storedBalance = getStoredBalance();
-    return isNaN(storedBalance) ? 5000 : storedBalance;
+    return storedBalance > 0 ? storedBalance : 5000;  // ✅ Fallback to 5000
   });
 
   const [expenses, setExpenses] = useState(() => {
@@ -29,13 +29,25 @@ const App = () => {
 
   const addExpense = (expense) => {
     if (walletBalance >= expense.price) {
-      setExpenses([...expenses, expense]);
-      setWalletBalance((prev) => prev - expense.price);
+      setExpenses((prev) => {
+        const updatedExpenses = [...prev, expense];
+  
+        // ✅ Save updated expenses immediately
+        saveExpenses(updatedExpenses);
+        return updatedExpenses;
+      });
+  
+      setWalletBalance((prev) => {
+        const newBalance = prev - expense.price;
+  
+        // ✅ Save updated balance immediately
+        saveBalance(newBalance);
+        return newBalance;
+      });
     } else {
       alert("Insufficient balance!");
     }
-  };
-
+  }
   const editExpense = (updatedExpense) => {
     const updatedExpenses = expenses.map((exp) =>
       exp.id === updatedExpense.id ? updatedExpense : exp

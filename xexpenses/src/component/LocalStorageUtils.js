@@ -1,8 +1,10 @@
 export const getStoredBalance = () => {
   const storedBalance = localStorage.getItem("walletBalance");
-  return storedBalance ? parseFloat(storedBalance) || 0 : 0; // Ensures it's never NaN
+  
+  // ✅ Ensure it's always a valid number (default to 5000 if invalid)
+  const balance = storedBalance ? parseFloat(storedBalance) : 5000;
+  return isNaN(balance) ? 5000 : balance;
 };
-
 export const getStoredExpenses = () => {
   try {
     const storedExpenses = localStorage.getItem("expenses");

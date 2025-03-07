@@ -20,7 +20,7 @@ const ExpenseForm = ({ onAddExpense }) => {
     onAddExpense({
       id: Date.now(),
       title,
-      price: Number(price),
+      price: Number(price),  // ✅ Convert to number
       category,
       date,
     });
