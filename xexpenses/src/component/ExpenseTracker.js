@@ -13,11 +13,9 @@ const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState(() => JSON.parse(localStorage.getItem("expenses")) || []);
   const [modalOpen, setModalOpen] = useState(false);
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [expenseData, setExpenseData] = useState({ title: "", price: "", category: "", date: "" });
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 500); // Simulate a brief load time
     localStorage.setItem("walletBalance", walletBalance);
     localStorage.setItem("expenses", JSON.stringify(expenses));
   }, [walletBalance, expenses]);
@@ -63,6 +61,20 @@ const ExpenseTracker = () => {
         <h2 data-testid="wallet-balance">Wallet Balance: ${walletBalance.toFixed(2)}</h2>
         <button data-testid="add-income-btn" onClick={() => setIncomeModalOpen(true)}>+ Add Income</button>
         <button data-testid="add-expense-btn" onClick={() => setModalOpen(true)}>+ Add Expense</button>
+        
+        <h2 data-testid="transactions-title">Transactions</h2>
+        <ul data-testid="expense-list">
+          {expenses.length > 0 ? (
+            expenses.map((expense, index) => (
+              <li key={index}>
+                {expense.title} - ${expense.price} - {expense.category} - {expense.date}
+                <FaTrash data-testid={`delete-expense-${index}`} onClick={() => deleteExpense(index)} />
+              </li>
+            ))
+          ) : (
+            <p>No transactions yet.</p>
+          )}
+        </ul>
 
         {modalOpen && (
           <Modal isOpen={modalOpen} onRequestClose={() => setModalOpen(false)} className="modal">
@@ -75,6 +87,8 @@ const ExpenseTracker = () => {
                 <option value="Food">Food</option>
                 <option value="Transport">Transport</option>
                 <option value="Shopping">Shopping</option>
+                <option value="Travel">Travel</option>
+                <option value="Entertainment">Entertainment</option>
               </select>
               <input data-testid="expense-date" name="date" type="date" value={expenseData.date} onChange={(e) => setExpenseData({ ...expenseData, date: e.target.value })} />
               <button data-testid="submit-expense" type="submit">Add Expense</button>
@@ -82,34 +96,8 @@ const ExpenseTracker = () => {
           </Modal>
         )}
 
-        {incomeModalOpen && (
-          <Modal isOpen={incomeModalOpen} onRequestClose={() => setIncomeModalOpen(false)} className="modal">
-            <h2>Add Income</h2>
-            <form onSubmit={handleIncome}>
-              <input data-testid="income-amount" name="income" type="number" placeholder="Income Amount" />
-              <button data-testid="submit-income" type="submit">Add Balance</button>
-            </form>
-          </Modal>
-        )}
-
-        {!loading ? (
-          <>
-            <h2 data-testid="expenses-title">Expenses</h2>
-            <ul data-testid="expense-list">
-              {expenses.map((expense, index) => (
-                <li key={index}>
-                  {expense.title} - ${expense.price} - {expense.category} - {expense.date}
-                  <FaTrash data-testid={`delete-expense-${index}`} onClick={() => deleteExpense(index)} />
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <p data-testid="loading-text">Loading...</p>
-        )}
-
         <PieChart width={400} height={400}>
-          <Pie data={expenses.map((expense) => ({ ...expense, price: parseFloat(expense.price) || 0 }))} dataKey="price" nameKey="category" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label />
+          <Pie data={expenses.map(expense => ({ ...expense, price: parseFloat(expense.price) || 0 }))} dataKey="price" nameKey="category" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label />
           <Tooltip />
         </PieChart>
 
