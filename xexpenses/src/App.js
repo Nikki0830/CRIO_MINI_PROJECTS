@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Grid2 } from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid"; // Fixed incorrect import for Grid
 import WalletBalance from "./component/WalletBalance";
 import ExpenseForm from "./component/ExpenseForm";
 import ExpenseList from "./component/ExpenseList";
@@ -9,19 +10,16 @@ import { getStoredExpenses, getStoredBalance, saveExpenses, saveBalance } from "
 import "./component/Styles.css";
 
 const App = () => {
-  const [walletBalance, setWalletBalance] = useState(() => {
-    const storedBalance = getStoredBalance();
-    return storedBalance > 0 ? storedBalance : 5000;  // ✅ Fallback to 5000
-  });
-
-  const [expenses, setExpenses] = useState(() => {
-    return getStoredExpenses() || [];
-  });
+  const [expenses, setExpenses] = useState([]);
+  const [walletBalance, setWalletBalance] = useState(5000);
 
   useEffect(() => {
-    saveExpenses(expenses);
-    saveBalance(walletBalance);
-  }, [expenses, walletBalance]);
+    const storedExpenses = getStoredExpenses();
+    const storedBalance = getStoredBalance();
+  
+    if (storedExpenses) setExpenses(storedExpenses);
+    if (storedBalance) setWalletBalance(storedBalance);
+  }, []);
 
   const addIncome = (amount) => {
     setWalletBalance((prev) => prev + amount);
@@ -31,23 +29,19 @@ const App = () => {
     if (walletBalance >= expense.price) {
       setExpenses((prev) => {
         const updatedExpenses = [...prev, expense];
-  
-        // ✅ Save updated expenses immediately
         saveExpenses(updatedExpenses);
         return updatedExpenses;
       });
-  
       setWalletBalance((prev) => {
         const newBalance = prev - expense.price;
-  
-        // ✅ Save updated balance immediately
         saveBalance(newBalance);
         return newBalance;
       });
     } else {
       alert("Insufficient balance!");
     }
-  }
+  };
+
   const editExpense = (updatedExpense) => {
     const updatedExpenses = expenses.map((exp) =>
       exp.id === updatedExpense.id ? updatedExpense : exp
@@ -65,23 +59,26 @@ const App = () => {
 
   return (
     <Container sx={{ padding: "20px", minHeight: "100vh" }}>
-      {/* ✅ Updated heading to include 'Expenses' */}
       <Typography variant="h1" align="center" sx={{ mb: 2 }}>
         Expense Tracker
       </Typography>
 
-      <Grid2 container spacing={3}>
-        <Grid2 item xs={12} sm={6} md={6}>
+      {/* ✅ Added WalletBalance component */}
+      <WalletBalance balance={walletBalance} onAddIncome={addIncome} />
+
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={6}>
           <ExpenseForm onAddExpense={addExpense} />
           <ExpenseList expenses={expenses} onEditExpense={editExpense} onDeleteExpense={deleteExpense} />
-        </Grid2>
-        <Grid2 item xs={12} sm={6} md={6}>
+        </Grid>
+        <Grid item xs={12} sm={6} md={6}>
           <ExpenseSummary expenses={expenses} />
           <ExpenseTrends expenses={expenses} />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
 
 export default App;
+

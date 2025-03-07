@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, Button, TextField } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
 
 const WalletBalance = ({ balance, onAddIncome }) => {
   const [income, setIncome] = useState("");
@@ -17,8 +23,9 @@ const WalletBalance = ({ balance, onAddIncome }) => {
     <Card sx={{ mb: 2, p: 2 }}>
       <CardContent>
         {/* ✅ Updated to h4 for better visibility and Cypress detection */}
-        <Typography variant="h4" data-testid="wallet-balance">
-          Wallet Balance: ₹{balance}
+        <Typography variant="h4">Wallet Balance</Typography>
+        <Typography variant="h5" data-testid="wallet-balance">
+          ₹{balance}
         </Typography>
 
         {/* ✅ Added test-friendly attributes for better Cypress detection */}
@@ -31,14 +38,14 @@ const WalletBalance = ({ balance, onAddIncome }) => {
           onChange={(e) => setIncome(e.target.value)}
           sx={{ mr: 2, mt: 2 }}
         />
-        
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={handleAddIncome} 
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddIncome}
           data-testid="add-income-btn"
         >
-          + Add Income
+          Add Income
         </Button>
       </CardContent>
     </Card>
@@ -46,4 +53,3 @@ const WalletBalance = ({ balance, onAddIncome }) => {
 };
 
 export default WalletBalance;
-

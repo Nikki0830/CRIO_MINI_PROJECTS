@@ -20,7 +20,7 @@ const ExpenseForm = ({ onAddExpense }) => {
     onAddExpense({
       id: Date.now(),
       title,
-      price: Number(price),  // ✅ Convert to number
+      price: Number(price), // ✅ Convert to number
       category,
       date,
     });
@@ -36,6 +36,7 @@ const ExpenseForm = ({ onAddExpense }) => {
     <Card sx={{ mb: 2, p: 2 }}>
       <CardContent>
         <TextField
+          name="title" // 🔹 Add this line
           label="Title"
           fullWidth
           value={title}
@@ -43,8 +44,9 @@ const ExpenseForm = ({ onAddExpense }) => {
           sx={{ mb: 2 }}
           data-testid="expense-title"
         />
-        
+
         <TextField
+          name="price" // 🔹 Add this line
           type="number"
           label="Amount"
           fullWidth
@@ -53,8 +55,9 @@ const ExpenseForm = ({ onAddExpense }) => {
           sx={{ mb: 2 }}
           data-testid="expense-amount"
         />
-        
+
         <TextField
+          name="category" // 🔹 Add this line
           select
           label="Category"
           fullWidth
@@ -69,8 +72,9 @@ const ExpenseForm = ({ onAddExpense }) => {
             </MenuItem>
           ))}
         </TextField>
-        
+
         <TextField
+          name="date" // 🔹 Add this line
           type="date"
           fullWidth
           value={date}
@@ -78,7 +82,7 @@ const ExpenseForm = ({ onAddExpense }) => {
           sx={{ mb: 2 }}
           data-testid="expense-date"
         />
-        
+
         <Button
           variant="contained"
           color="primary"
@@ -94,4 +98,3 @@ const ExpenseForm = ({ onAddExpense }) => {
 };
 
 export default ExpenseForm;
-
