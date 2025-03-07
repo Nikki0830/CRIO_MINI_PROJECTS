@@ -1,61 +1,11 @@
 body {
-    background: #1e1e1e;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  .main-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .header-title {
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .summary-container {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
   }
-  
-  .summary-card {
-    background: #333;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
-  }
-  
-  .income-btn {
-    background: #4CAF50;
-    color: white;
-  }
-  
-  .expense-btn {
-    background: #E53935;
-    color: white;
-  }
-  
-  .modal-box {
-    background: white;
-    padding: 20px;
-    width: 300px;
-    margin: auto;
-    border-radius: 10px;
-  }
-  
-  .list-item {
-    background: #424242;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 5px 0;
-  }
-  
-  .chart-container {
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  
