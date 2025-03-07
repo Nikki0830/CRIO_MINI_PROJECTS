@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Grid } from "@mui/material";
+import { Container, Typography, Grid2 } from "@mui/material";
 import WalletBalance from "./component/WalletBalance";
 import ExpenseForm from "./component/ExpenseForm";
 import ExpenseList from "./component/ExpenseList";
@@ -66,20 +66,20 @@ const App = () => {
   return (
     <Container sx={{ padding: "20px", minHeight: "100vh" }}>
       {/* ✅ Updated heading to include 'Expenses' */}
-      <Typography variant="h3" align="center" sx={{ mb: 2 }}>
+      <Typography variant="h1" align="center" sx={{ mb: 2 }}>
         Expense Tracker
       </Typography>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={6}>
+      <Grid2 container spacing={3}>
+        <Grid2 item xs={12} sm={6} md={6}>
           <ExpenseForm onAddExpense={addExpense} />
           <ExpenseList expenses={expenses} onEditExpense={editExpense} onDeleteExpense={deleteExpense} />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
+        </Grid2>
+        <Grid2 item xs={12} sm={6} md={6}>
           <ExpenseSummary expenses={expenses} />
           <ExpenseTrends expenses={expenses} />
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Container>
   );
 };
