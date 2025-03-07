@@ -1,57 +1,30 @@
 import React, { useState, useEffect } from "react";
-import Modal from "react-modal"; // Correct import
+import Modal from "react-modal";
 import { SnackbarProvider, useSnackbar } from "notistack";
-import {
-  PieChart,
-  Pie,
-  Tooltip,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Legend,
-} from "recharts";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
+import { FaTrash } from "react-icons/fa";
 import "./Styles.css";
 
-// Set the app element for accessibility
 Modal.setAppElement("#root");
 
 const ExpenseTracker = () => {
   const { enqueueSnackbar } = useSnackbar();
-
-  // Load wallet balance from local storage or set default to 5000
-  const [walletBalance, setWalletBalance] = useState(() => {
-    return parseFloat(localStorage.getItem("walletBalance")) || 5000;
-  });
-
-  // Load expenses from local storage
-  const [expenses, setExpenses] = useState(() => {
-    return JSON.parse(localStorage.getItem("expenses")) || [];
-  });
-
+  const [walletBalance, setWalletBalance] = useState(() => parseFloat(localStorage.getItem("walletBalance")) || 5000);
+  const [expenses, setExpenses] = useState(() => JSON.parse(localStorage.getItem("expenses")) || []);
   const [modalOpen, setModalOpen] = useState(false);
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
-  const [expenseData, setExpenseData] = useState({
-    title: "",
-    price: "",
-    category: "",
-    date: "",
-  });
+  const [loading, setLoading] = useState(true);
+  const [expenseData, setExpenseData] = useState({ title: "", price: "", category: "", date: "" });
 
   useEffect(() => {
+    setTimeout(() => setLoading(false), 500); // Simulate a brief load time
     localStorage.setItem("walletBalance", walletBalance);
     localStorage.setItem("expenses", JSON.stringify(expenses));
   }, [walletBalance, expenses]);
 
   const addExpense = (e) => {
     e.preventDefault();
-    if (
-      !expenseData.title ||
-      !expenseData.price ||
-      !expenseData.category ||
-      !expenseData.date
-    ) {
+    if (!expenseData.title || !expenseData.price || !expenseData.category || !expenseData.date) {
       enqueueSnackbar("All fields are required!", { variant: "error" });
       return;
     }
@@ -60,8 +33,7 @@ const ExpenseTracker = () => {
       enqueueSnackbar("Insufficient balance!", { variant: "error" });
       return;
     }
-    const updatedExpenses = [...expenses, expenseData];
-    setExpenses(updatedExpenses);
+    setExpenses([...expenses, expenseData]);
     setWalletBalance(walletBalance - price);
     setExpenseData({ title: "", price: "", category: "", date: "" });
     setModalOpen(false);
@@ -87,111 +59,60 @@ const ExpenseTracker = () => {
   return (
     <SnackbarProvider maxSnack={3}>
       <div className="container">
-        <h1>Expense Tracker</h1>
-        <h2>Wallet Balance: ${walletBalance.toFixed(2)}</h2>
-        <button type="button" onClick={() => setIncomeModalOpen(true)}>
-          + Add Income
-        </button>
-        <button type="button" onClick={() => setModalOpen(true)}>
-          + Add Expense
-        </button>
+        <h1 data-testid="app-title">Expense Tracker</h1>
+        <h2 data-testid="wallet-balance">Wallet Balance: ${walletBalance.toFixed(2)}</h2>
+        <button data-testid="add-income-btn" onClick={() => setIncomeModalOpen(true)}>+ Add Income</button>
+        <button data-testid="add-expense-btn" onClick={() => setModalOpen(true)}>+ Add Expense</button>
 
-        {/* Expense Modal */}
         {modalOpen && (
-          <Modal
-            isOpen={modalOpen}
-            onRequestClose={() => setModalOpen(false)}
-            className="modal"
-          >
+          <Modal isOpen={modalOpen} onRequestClose={() => setModalOpen(false)} className="modal">
             <h2>Add Expense</h2>
             <form onSubmit={addExpense}>
-              <input
-                name="title"
-                placeholder="Expense Title"
-                value={expenseData.title}
-                onChange={(e) =>
-                  setExpenseData({ ...expenseData, title: e.target.value })
-                }
-              />
-              <input
-                name="price"
-                type="number"
-                placeholder="Expense Amount"
-                value={expenseData.price}
-                onChange={(e) =>
-                  setExpenseData({ ...expenseData, price: e.target.value })
-                }
-              />
-              <select
-                name="category"
-                value={expenseData.category}
-                onChange={(e) =>
-                  setExpenseData({ ...expenseData, category: e.target.value })
-                }
-              >
+              <input data-testid="expense-title" name="title" placeholder="Expense Title" value={expenseData.title} onChange={(e) => setExpenseData({ ...expenseData, title: e.target.value })} />
+              <input data-testid="expense-price" name="price" type="number" placeholder="Expense Amount" value={expenseData.price} onChange={(e) => setExpenseData({ ...expenseData, price: e.target.value })} />
+              <select data-testid="expense-category" name="category" value={expenseData.category} onChange={(e) => setExpenseData({ ...expenseData, category: e.target.value })}>
                 <option value="">Select Category</option>
                 <option value="Food">Food</option>
                 <option value="Transport">Transport</option>
                 <option value="Shopping">Shopping</option>
               </select>
-              <input
-                name="date"
-                type="date"
-                value={expenseData.date}
-                onChange={(e) =>
-                  setExpenseData({ ...expenseData, date: e.target.value })
-                }
-              />
-              <button type="submit">Add Expense</button>
+              <input data-testid="expense-date" name="date" type="date" value={expenseData.date} onChange={(e) => setExpenseData({ ...expenseData, date: e.target.value })} />
+              <button data-testid="submit-expense" type="submit">Add Expense</button>
             </form>
           </Modal>
         )}
 
-        {/* Income Modal */}
         {incomeModalOpen && (
-          <Modal
-            isOpen={incomeModalOpen}
-            onRequestClose={() => setIncomeModalOpen(false)}
-            className="modal"
-          >
+          <Modal isOpen={incomeModalOpen} onRequestClose={() => setIncomeModalOpen(false)} className="modal">
             <h2>Add Income</h2>
             <form onSubmit={handleIncome}>
-              <input name="income" type="number" placeholder="Income Amount" />
-              <button type="submit">Add Balance</button>
+              <input data-testid="income-amount" name="income" type="number" placeholder="Income Amount" />
+              <button data-testid="submit-income" type="submit">Add Balance</button>
             </form>
           </Modal>
         )}
 
-        {/* Expense List */}
-        <ul>
-          {expenses.map((expense, index) => (
-            <li key={index}>
-              {expense.title} - ${expense.price} - {expense.category} -{" "}
-              {expense.date}
-              <FaTrash onClick={() => deleteExpense(index)} />
-            </li>
-          ))}
-        </ul>
+        {!loading ? (
+          <>
+            <h2 data-testid="expenses-title">Expenses</h2>
+            <ul data-testid="expense-list">
+              {expenses.map((expense, index) => (
+                <li key={index}>
+                  {expense.title} - ${expense.price} - {expense.category} - {expense.date}
+                  <FaTrash data-testid={`delete-expense-${index}`} onClick={() => deleteExpense(index)} />
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p data-testid="loading-text">Loading...</p>
+        )}
 
-        {/* Ensure prices are numbers before using in PieChart */}
         <PieChart width={400} height={400}>
-          <Pie
-            data={expenses.map((expense) => ({
-              ...expense,
-              price: parseFloat(expense.price) || 0, // Ensure price is a number
-            }))}
-            dataKey="price"
-            nameKey="category"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            fill="#8884d8"
-            label
-          />
+          <Pie data={expenses.map((expense) => ({ ...expense, price: parseFloat(expense.price) || 0 }))} dataKey="price" nameKey="category" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label />
           <Tooltip />
         </PieChart>
 
-        {/* Bar Chart for Expense Trends */}
         <BarChart width={400} height={300} data={expenses}>
           <XAxis dataKey="category" />
           <YAxis />
