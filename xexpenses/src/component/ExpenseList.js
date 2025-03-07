@@ -5,14 +5,20 @@ const ExpenseList = ({ expenses, onEditExpense, onDeleteExpense }) => {
   return (
     <Card sx={{ p: 2 }}>
       <CardContent>
-        <Typography variant="h6">Recent Transactions</Typography>
+        {/* 🔹 Updated this to explicitly include "Expenses" */}
+        <Typography variant="h5" component="h2">
+          Expenses
+        </Typography>
+        
         {expenses.length === 0 ? (
           <Typography>No expenses recorded.</Typography>
         ) : (
           expenses.map((expense) => (
             <Card key={expense.id} sx={{ mb: 2, p: 1 }}>
               <CardContent>
-                <Typography>{expense.title} - ₹{expense.price} ({expense.category})</Typography>
+                <Typography>
+                  {expense.title} - ₹{expense.price} ({expense.category})
+                </Typography>
                 <Typography variant="caption">{expense.date}</Typography>
                 <Button color="primary" onClick={() => onEditExpense(expense)}>Edit</Button>
                 <Button color="secondary" onClick={() => onDeleteExpense(expense.id)}>Delete</Button>
@@ -26,3 +32,4 @@ const ExpenseList = ({ expenses, onEditExpense, onDeleteExpense }) => {
 };
 
 export default ExpenseList;
+

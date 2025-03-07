@@ -16,7 +16,12 @@ const WalletBalance = ({ balance, onAddIncome }) => {
   return (
     <Card sx={{ mb: 2, p: 2 }}>
       <CardContent>
-        <Typography variant="h6">Wallet Balance: ₹{balance}</Typography>
+        {/* ✅ Updated to h4 for better visibility and Cypress detection */}
+        <Typography variant="h4" data-testid="wallet-balance">
+          Wallet Balance: ₹{balance}
+        </Typography>
+
+        {/* ✅ Added test-friendly attributes for better Cypress detection */}
         <TextField
           type="number"
           label="Income Amount"
@@ -26,7 +31,13 @@ const WalletBalance = ({ balance, onAddIncome }) => {
           onChange={(e) => setIncome(e.target.value)}
           sx={{ mr: 2, mt: 2 }}
         />
-        <Button variant="contained" color="primary" onClick={handleAddIncome}>
+        
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={handleAddIncome} 
+          data-testid="add-income-btn"
+        >
           + Add Income
         </Button>
       </CardContent>
@@ -35,3 +46,4 @@ const WalletBalance = ({ balance, onAddIncome }) => {
 };
 
 export default WalletBalance;
+
