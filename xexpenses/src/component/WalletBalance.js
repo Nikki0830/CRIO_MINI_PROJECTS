@@ -20,6 +20,7 @@ const WalletBalance = ({ balance, onAddIncome }) => {
         <TextField
           type="number"
           label="Income Amount"
+          data-testid="income-input"
           variant="outlined"
           value={income}
           onChange={(e) => setIncome(e.target.value)}

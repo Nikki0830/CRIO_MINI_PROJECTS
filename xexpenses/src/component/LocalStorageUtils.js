@@ -1,21 +1,6 @@
 export const getStoredBalance = () => {
   const storedBalance = localStorage.getItem("walletBalance");
-
-  // Check if storedBalance is null or invalid
-  if (!storedBalance || storedBalance === "NaN") {
-    localStorage.setItem("walletBalance", JSON.stringify(5000));
-    return 5000;
-  }
-
-  try {
-    const parsedBalance = JSON.parse(storedBalance);
-    return typeof parsedBalance === "number" && !isNaN(parsedBalance)
-      ? parsedBalance
-      : 5000;
-  } catch (error) {
-    localStorage.setItem("walletBalance", JSON.stringify(5000));
-    return 5000;
-  }
+  return storedBalance ? parseFloat(storedBalance) || 0 : 0; // Ensures it's never NaN
 };
 export const getStoredExpenses = () => {
   const storedExpenses = localStorage.getItem("expenses");

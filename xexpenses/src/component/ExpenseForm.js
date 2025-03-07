@@ -37,7 +37,7 @@ const ExpenseForm = ({ onAddExpense }) => {
         </TextField>
         <TextField type="date" fullWidth value={date} onChange={(e) => setDate(e.target.value)} sx={{ mb: 2 }} />
         <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-          Add Expense
+        + Add Expense
         </Button>
       </CardContent>
     </Card>
