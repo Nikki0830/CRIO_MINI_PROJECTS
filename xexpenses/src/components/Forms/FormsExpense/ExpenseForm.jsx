@@ -30,29 +30,41 @@ export default function ExpenseForm({
 
   const handleAdd = (e) => {
     e.preventDefault();
-
-    if (balance < Number(formData.price)) {
+  
+    const { title, category, price, date } = formData;
+  
+    // Validation: Ensure all fields are filled
+    if (!title.trim() || !category || !price || !date) {
+      enqueueSnackbar("All fields are required!", { variant: "error" });
+      return;
+    }
+  
+    // Check if the expense exceeds the available balance
+    if (balance < Number(price)) {
       enqueueSnackbar("Price should be less than the wallet balance", {
         variant: "warning",
       });
-      setIsOpen(false);
       return;
     }
-
-    setBalance((prev) => prev - Number(formData.price));
-
-    const lastId = expenseList.length > 0 ? expenseList[0].id : 0;
+  
+    // Deduct balance
+    setBalance((prev) => prev - Number(price));
+  
+    // Generate unique ID (get max ID and add 1)
+    const lastId = Array.isArray(expenseList) && expenseList.length > 0
+    ? Math.max(...expenseList.map((item) => item.id)) 
+    : 0;
+  
+    // Update Expense List
     setExpenseList((prev) => [{ ...formData, id: lastId + 1 }, ...prev]);
-
-    setFormData({
-      title: "",
-      category: "",
-      price: "",
-      date: "",
-    });
-
+  
+    // Reset form
+    setFormData({ title: "", category: "", price: "", date: "" });
+  
+    // Close modal
     setIsOpen(false);
   };
+  
 
   const handleEdit = (e) => {
     e.preventDefault();

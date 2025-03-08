@@ -8,19 +8,31 @@ import AddBalanceForm from "../../components/Forms/FormsAddBalance/AddBalanceFor
 import PieChart from "../../components/PieChart/PieChart";
 import BarChart from "../../components/ChartBar/ChartBar";
 
+// Custom Hook: Sync state with localStorage
 const useLocalStorage = (key, initialValue) => {
   const [strVal, setStrVal] = useState(() => {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : initialValue;
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error("Error loading localStorage:", error);
+      return initialValue;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(strVal));
+    try {
+      localStorage.setItem(key, JSON.stringify(strVal));
+    } catch (error) {
+      console.error("Error saving to localStorage:", error);
+    }
   }, [key, strVal]);
 
-  return [strVal, setStrVal];
+  return [strVal ?? initialValue, setStrVal]; // Ensure it always returns an array
 };
 
+
+// Function to categorize expenses
 const calculateCatList = (expList) => {
   return expList.reduce(
     (acc, item) => {
@@ -36,9 +48,9 @@ const calculateCatList = (expList) => {
 
 export default function Home() {
   const [balance, setBalance] = useLocalStorage("balance", 5000);
-  const [expList, setexpList] = useLocalStorage("expenses", []);
+  const [expList, setExpList] = useLocalStorage("expenses", []);
 
-  // Show hide modals
+  // Show/hide modals
   const [isOpnExp, setIsOpnExp] = useState(false);
   const [isOpnBal, setIsOpnBal] = useState(false);
 
@@ -54,8 +66,17 @@ export default function Home() {
   }, []);
 
   const handleAddExpense = useCallback(() => {
-    setIsOpnExp(true);
+    setIsOpnExp(false); // Close modal first
+    setTimeout(() => setIsOpnExp(true), 50); // Ensure state change triggers re-render
   }, []);
+
+  useEffect(() => {
+    console.log("Expense List Updated:", expList);
+  }, [expList]);
+
+  useEffect(() => {
+    console.log("Balance Updated:", balance);
+  }, [balance]);
 
   return (
     <div className={styles.container}>
@@ -93,7 +114,9 @@ export default function Home() {
       <div className={styles.transactionsWrapper}>
         <TransactionList
           transactions={expList}
-          editTransactions={setexpList}
+          editTransactions={(newTransactions) =>
+            setExpList([...newTransactions])
+          } // Ensure a new reference
           title="Recent Transactions"
           balance={balance}
           setBalance={setBalance}
@@ -112,8 +135,8 @@ export default function Home() {
       <Modal isOpen={isOpnExp} setIsOpen={setIsOpnExp}>
         <ExpenseForm
           setIsOpen={setIsOpnExp}
-          expList={expList}
-          setexpList={setexpList}
+          expenseList={expList || []} // Now it matches ExpenseForm props
+          setExpenseList={setExpList} // Fix: Change "setExpList" to "setExpenseList"
           setBalance={setBalance}
           balance={balance}
         />
