@@ -1,7 +1,6 @@
 
-(1)
+(1)https://crio-mini-projects-oba9.vercel.app/
 ![Screenshot (276)](https://github.com/user-attachments/assets/dde8c943-f397-4651-8315-fb5e08db0777)
-https://crio-mini-projects-oba9.vercel.app/
 "Aesthetic Country Explorer 🌍✨ – A Smooth Grid with a Touch of Magic!" 🚀💖
 
 (2)https://crio-mini-projects-suo7.vercel.app/
