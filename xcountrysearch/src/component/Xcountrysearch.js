@@ -12,17 +12,16 @@ function Country() {
     )
       .then((response) => response.json())
       .then((json) => setCountries(json))
-
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
-  //   console.log(countries);
 
   const filteredcountries = countries.filter((country) =>
     country.common.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <div className="main_div">
-      {/*input div */}
+      {/* Input field */}
       <input
         type="text"
         placeholder="Search countries..."
@@ -32,10 +31,8 @@ function Country() {
       <div className="countries_div">
         {filteredcountries.map(({ common, png }) => (
           <div key={common} className="countryCard">
-            {" "}
-            {/* Changed from flag_img_div */}
             <img src={png} alt="flag_images" className="flag_img" />
-            <h3 className="flag_name">{common}</h3>
+            <h2 className="flag_name">{common}</h2> {/* Changed from h3 to h2 */}
           </div>
         ))}
       </div>
@@ -44,3 +41,4 @@ function Country() {
 }
 
 export default Country;
+
