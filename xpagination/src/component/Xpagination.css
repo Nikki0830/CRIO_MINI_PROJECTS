@@ -1,0 +1,70 @@
+/* Styling for the main container */
+div {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Table headers */
+  th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-transform: uppercase;
+  }
+  
+  /* Table rows */
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Alternate row coloring */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Hover effect */
+  tr:hover {
+    background-color: #ddd;
+  }
+  
+  /* Pagination button container */
+  div button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+    border-radius: 5px;
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Disabled button styling */
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  /* Page indicator styling */
+  span {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  

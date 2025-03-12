@@ -10,7 +10,7 @@ export default function Pagination({ updatePage, currentPage, totalPages }) {
     }
 
     const handleNext = () => {
-        if(totalPages != currentPage){
+        if(totalPages !== currentPage){
             updatePage(prev => prev + 1)
         }
     }
