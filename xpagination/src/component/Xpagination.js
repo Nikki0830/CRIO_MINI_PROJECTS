@@ -18,7 +18,8 @@ function Xpagination() {
         }
         const data = await response.json();
         setEmployee(data);
-        console.log(data);
+        setCurrentPage(1); // Reset to page 1 when data is loaded
+        // console.log(data);
       } catch (err) {
         setError(err.message);
         alert("Failed to fetch data");
@@ -27,7 +28,7 @@ function Xpagination() {
     fetchData();
   }, []);
 
-  const totalPages = Math.ceil(employee.length / rowsPerPage);
+  const totalPages = Math.max(1, Math.ceil(employee.length / rowsPerPage)); // Ensure at least 1 page
   // Example:
   // Suppose we have 53 employees.
   // 53 / 10 = 5.3, so Math.ceil(5.3) = 6.
