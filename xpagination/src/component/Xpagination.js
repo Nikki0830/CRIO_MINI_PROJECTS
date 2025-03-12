@@ -7,8 +7,6 @@ function Xpagination() {
   const [error, setError] = useState(null);
   const rowsPerPage = 10;
 
-  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
