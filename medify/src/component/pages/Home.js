@@ -5,12 +5,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Home() {
-  const navigate = useNavigate(); // ✅ useNavigate should be used here
+  const navigate = useNavigate();
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [showStates, setShowStates] = useState(false);
+  const [showCities, setShowCities] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false); // Loading state for cities
 
+  // Fetch states on component mount
   useEffect(() => {
     axios
       .get("https://meddata-backend.onrender.com/states")
@@ -21,67 +25,98 @@ function Home() {
       });
   }, []);
 
+  // Fetch cities when state is selected (with a delay to allow state update)
   useEffect(() => {
-    if (!selectedState) return; // Don't fetch cities if no state is selected
+    if (!selectedState) return;
 
+    setLoadingCities(true); // Start loading
     axios
       .get(`https://meddata-backend.onrender.com/cities/${selectedState}`)
-      .then((response) => setCities(response.data))
+      .then((response) => {
+        setCities(response.data);
+        setShowCities(true); // Open dropdown when cities are available
+      })
       .catch((error) => {
         console.error("Error fetching cities:", error);
         alert("Failed to load cities. Please try again later.");
-      });
+      })
+      .finally(() => setLoadingCities(false)); // Stop loading
   }, [selectedState]);
-  // selectedState && selectedCity
-  // This checks if both a state and a city have been selected by the user.
-  // If both values are present, the code navigates to the Search Results page with the selected state and city as URL parameters.
-  // 🔹 navigate(/search?state=${selectedState}&city=${selectedCity})
-  // Redirects the user to the SearchResults page.
-  // The selected state and city are passed as query parameters (?state=XYZ&city=ABC).
+
   const handleSearch = () => {
+    console.log("State:", selectedState);
+    console.log("City:", selectedCity);
+
     if (selectedState && selectedCity) {
-      navigate(`/search?state=${selectedState}&city=${selectedCity}`); // ✅ Correct function usage
+      navigate(`/search?state=${encodeURIComponent(selectedState)}&city=${encodeURIComponent(selectedCity)}`);
     } else {
       alert("Please select a state and city.");
     }
   };
+
   return (
     <div className="p-6 max-w-lg mx-auto">
       <h2 className="text-xl font-semibold mb-4">Find a Medical Center</h2>
-      <div id="state">
-        <select
-          value={selectedState}
-          onChange={(e) => setSelectedState(e.target.value)}
-          className="w-full p-2 border rounded"
+
+      {/* State Dropdown */}
+      <div id="state" className="relative">
+        <button
+          onClick={() => setShowStates(!showStates)}
+          className="w-full p-2 border rounded bg-white text-left"
         >
-          <option value="">Select State</option>
-          {states.map((state) => (
-            <option key={state} value={state}>
-              {state}
-            </option>
-          ))}
-        </select>
+          {selectedState || "Select State"}
+        </button>
+        {showStates && (
+          <ul className="absolute w-full bg-white border rounded shadow-md mt-1 z-50 max-h-48 overflow-y-auto">
+            {states.map((state) => (
+              <li
+                key={state}
+                onClick={() => {
+                  setSelectedState(state);
+                  setSelectedCity(""); // Reset city when state changes
+                  setShowStates(false);
+                }}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+              >
+                {state}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      <div id="city">
-        <select
-          value={selectedCity}
-          onChange={(e) => setSelectedCity(e.target.value)}
-          className="w-full p-2 border rounded"
+      {/* City Dropdown */}
+      <div id="city" className="relative mt-4">
+        <button
+          onClick={() => setShowCities(!showCities)}
+          className="w-full p-2 border rounded bg-white text-left"
+          disabled={!selectedState || loadingCities} // Disable if no state or loading
         >
-          <option value="">Select City</option>
-          {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </select>
+          {loadingCities ? "Loading..." : selectedCity || "Select City"}
+        </button>
+        {showCities && (
+          <ul className="absolute w-full bg-white border rounded shadow-md mt-1 z-50 max-h-48 overflow-y-auto">
+            {cities.map((city) => (
+              <li
+                key={city}
+                onClick={() => {
+                  setSelectedCity(city);
+                  setShowCities(false);
+                }}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+              >
+                {city}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white p-2 mt-4 rounded"
+        className="w-full bg-blue-600 text-white p-2 mt-4 rounded disabled:bg-gray-400"
         onClick={handleSearch}
+        disabled={!selectedState || !selectedCity} // Disable button if selection is incomplete
       >
         Search
       </button>
@@ -90,6 +125,8 @@ function Home() {
 }
 
 export default Home;
+
+
 // export default Home;
 
 // Why Use useNavigate Instead of <Link>?
