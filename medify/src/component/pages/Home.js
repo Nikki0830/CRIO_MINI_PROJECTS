@@ -48,9 +48,8 @@ function Home() {
   return (
     <div className="p-6 max-w-lg mx-auto">
       <h2 className="text-xl font-semibold mb-4">Find a Medical Center</h2>
-      <div>
+      <div id="state">
         <select
-          id="state"
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
           className="w-full p-2 border rounded"
@@ -63,13 +62,11 @@ function Home() {
           ))}
         </select>
       </div>
-      <div className="mt-4">
+
+      <div id="city">
         <select
-          id="city"
           value={selectedCity}
-          onChange={(e) => {
-            setSelectedCity(e.target.value);
-          }}
+          onChange={(e) => setSelectedCity(e.target.value)}
           className="w-full p-2 border rounded"
         >
           <option value="">Select City</option>
