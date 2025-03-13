@@ -1,5 +1,3 @@
-// The home page allows users to select a state and city to find medical centers.
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -12,9 +10,11 @@ function Home() {
   const [selectedCity, setSelectedCity] = useState("");
   const [showStates, setShowStates] = useState(false);
   const [showCities, setShowCities] = useState(false);
-  const [loadingCities, setLoadingCities] = useState(false); // Loading state for cities
+  const [loadingCities, setLoadingCities] = useState(false);
+  const [loadingHospitals, setLoadingHospitals] = useState(false);
+  const [hospitals, setHospitals] = useState([]);
 
-  // Fetch states on component mount
+  // Fetch states
   useEffect(() => {
     axios
       .get("https://meddata-backend.onrender.com/states")
@@ -25,28 +25,47 @@ function Home() {
       });
   }, []);
 
-  // Fetch cities when state is selected (with a delay to allow state update)
+  // Fetch cities when a state is selected
   useEffect(() => {
     if (!selectedState) return;
+    
+    setLoadingCities(true);
+    setCities([]); // Reset cities when state changes
+    setSelectedCity(""); // Reset city selection
 
-    setLoadingCities(true); // Start loading
     axios
       .get(`https://meddata-backend.onrender.com/cities/${selectedState}`)
       .then((response) => {
         setCities(response.data);
-        setShowCities(true); // Open dropdown when cities are available
+        setShowCities(false);
       })
       .catch((error) => {
         console.error("Error fetching cities:", error);
         alert("Failed to load cities. Please try again later.");
       })
-      .finally(() => setLoadingCities(false)); // Stop loading
+      .finally(() => setLoadingCities(false));
   }, [selectedState]);
 
-  const handleSearch = () => {
-    console.log("State:", selectedState);
-    console.log("City:", selectedCity);
+  // Fetch hospitals when both state and city are selected
+  useEffect(() => {
+    if (!selectedState || !selectedCity) return;
 
+    setLoadingHospitals(true);
+    setHospitals([]); // Reset hospitals when new search happens
+
+    axios
+      .get(`https://meddata-backend.onrender.com/hospitals?state=${selectedState}&city=${selectedCity}`, { timeout: 8000 }) 
+      .then((response) => {
+        setHospitals(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching hospitals:", error);
+        alert("Failed to load hospitals. Please try again later.");
+      })
+      .finally(() => setLoadingHospitals(false));
+  }, [selectedState, selectedCity]);
+
+  const handleSearch = () => {
     if (selectedState && selectedCity) {
       navigate(`/search?state=${encodeURIComponent(selectedState)}&city=${encodeURIComponent(selectedCity)}`);
     } else {
@@ -59,7 +78,7 @@ function Home() {
       <h2 className="text-xl font-semibold mb-4">Find a Medical Center</h2>
 
       {/* State Dropdown */}
-      <div id="state" className="relative">
+      <div id="state" className="relative"  aria-label="State Dropdown">
         <button
           onClick={() => setShowStates(!showStates)}
           className="w-full p-2 border rounded bg-white text-left"
@@ -73,7 +92,7 @@ function Home() {
                 key={state}
                 onClick={() => {
                   setSelectedState(state);
-                  setSelectedCity(""); // Reset city when state changes
+                  setSelectedCity(""); // Reset city on state change
                   setShowStates(false);
                 }}
                 className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -86,11 +105,11 @@ function Home() {
       </div>
 
       {/* City Dropdown */}
-      <div id="city" className="relative mt-4">
+      <div id="city" className="relative mt-4" aria-label="City Dropdown">
         <button
           onClick={() => setShowCities(!showCities)}
           className="w-full p-2 border rounded bg-white text-left"
-          disabled={!selectedState || loadingCities} // Disable if no state or loading
+          disabled={!selectedState || loadingCities}
         >
           {loadingCities ? "Loading..." : selectedCity || "Select City"}
         </button>
@@ -116,15 +135,28 @@ function Home() {
         type="submit"
         className="w-full bg-blue-600 text-white p-2 mt-4 rounded disabled:bg-gray-400"
         onClick={handleSearch}
-        disabled={!selectedState || !selectedCity} // Disable button if selection is incomplete
+        disabled={!selectedState || !selectedCity}
       >
         Search
       </button>
+
+      {/* Display hospitals */}
+      {loadingHospitals ? (
+        <p className="mt-4 text-gray-600">Loading hospitals...</p>
+      ) : hospitals.length > 0 ? (
+        <p className="mt-4 font-medium">
+          {hospitals.length} medical centers available in {selectedCity.toLowerCase()}
+        </p>
+      ) : (
+        <p className="mt-4 text-gray-500">No hospitals found.</p>
+      )}
     </div>
   );
 }
 
 export default Home;
+
+
 
 
 // export default Home;

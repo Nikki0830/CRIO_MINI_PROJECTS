@@ -1,43 +1,42 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
-export function BookingPage() {
+function BookingPage() {
   const { id } = useParams();
   const [date, setDate] = useState("");
   const [timeSlot, setTimeSlot] = useState("");
   const [bookings, setBookings] = useState(() => {
-    return JSON.parse(localStorage.getItem("bookings")) || [];
+    return JSON.parse(localStorage.getItem("bookings") || []);
   });
 
   const handleBooking = () => {
     if (date && timeSlot) {
       const newBooking = { hospital: id, date, timeSlot };
-      const updatedBookings = [...bookings, newBooking];
-      setBookings(updatedBookings);
-      localStorage.setItem("bookings", JSON.stringify(updatedBookings));
-      alert("Appointment booked successfully!");
+      const updateBookings = [...bookings, newBooking];
+      setBookings(updateBookings);
+      localStorage.setItem("bookings", JSON.stringify(updateBookings));
+      alert("Appoinment booked successfully");
     } else {
       alert("Please select a date and time slot.");
     }
   };
-
   return (
     <div className="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md mt-6">
       <h2 className="text-xl font-semibold mb-4">Book Appointment at {id}</h2>
       <div className="mb-4">
         <label className="block font-medium">Date:</label>
-        <input 
-          type="date" 
-          value={date} 
-          onChange={(e) => setDate(e.target.value)} 
-          className="w-full p-2 border rounded" 
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="w-full p-2 border rounded"
         />
       </div>
       <div className="mb-4">
         <label className="block font-medium">Time Slot:</label>
-        <select 
-          value={timeSlot} 
-          onChange={(e) => setTimeSlot(e.target.value)} 
+        <select
+          value={timeSlot}
+          onChange={(e) => setTimeSlot(e.target.value)}
           className="w-full p-2 border rounded"
         >
           <option value="">Select a Time Slot</option>
@@ -46,18 +45,15 @@ export function BookingPage() {
           <option value="Evening">Evening</option>
         </select>
       </div>
-      <button 
-        className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600" 
+      <button
+        className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
         onClick={handleBooking}
-      >
-        Book FREE Center Visit
-      </button>
+      >Book FREE Center Visit</button>
     </div>
   );
 }
 
 export default BookingPage;
-
 
 // Explanation of handleBooking Function
 // This function is responsible for handling the appointment booking process when the user clicks the "Book FREE Center Visit" button.

@@ -19,9 +19,6 @@ function App() {
           </Link>
         </div>
       </nav>
-      {/* Navigation bar provides links to the homepage and My Bookings page.
-      Routes define paths for different pages.
-      :id in /booking/:id → Dynamic route for booking appointments. */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchResults />} />
@@ -29,8 +26,8 @@ function App() {
         <Route path="/my-bookings" element={<MyBookings />} />
       </Routes>
     </Router>
-    // <div className='text-5xl'>app</div>
   );
 }
 
 export default App;
+
