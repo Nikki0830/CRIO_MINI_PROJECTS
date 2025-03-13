@@ -93,6 +93,8 @@ function Home() {
 }
 
 export default Home;
+// export default Home;
+
 // Why Use useNavigate Instead of <Link>?
 // You're right that we can navigate using React Router's <Link> component, but useNavigate is needed for dynamic and programmatic navigation. Let’s break it down:
 
