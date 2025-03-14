@@ -57,7 +57,7 @@ import {
               <Link>Surgeries</Link>
               <Link>Software for Provider</Link>
               <Link>Facilities</Link>
-              <Link to="/my-bookings">
+              <Link to="">
                 <Button variant="contained" disableElevation>
                   My Bookings
                 </Button>
