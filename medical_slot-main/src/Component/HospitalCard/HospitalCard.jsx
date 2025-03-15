@@ -3,10 +3,10 @@ import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import thumb from "../../assets/thumbsup.png";
 import Calendar from "../Calendar/Calendar";
 import { useState } from "react";
-import { format, isValid, parseISO } from "date-fns";
+import { format } from "date-fns";
 
 export default function HospitalCard({
-  details = {},
+  details,
   availableSlots,
   handleBooking,
   booking = false,
@@ -37,21 +37,18 @@ export default function HospitalCard({
             textTransform="capitalize"
             lineHeight={1}
           >
-            {(details["Hospital Name"] || "Unknown Hospital").toLowerCase()}
+            {details["Hospital Name"].toLowerCase()}
           </Typography>
-
           <Typography
             textTransform="capitalize"
             color="#414146"
             fontSize={14}
             fontWeight={700}
           >
-            {`${details["City"]?.toLowerCase() || "Unknown City"}, ${
-              details["State"] || "Unknown State"
-            }`}
+            {`${details["City"].toLowerCase()}, ${details["State"]}`}
           </Typography>
           <Typography fontSize={14} mb={1}>
-            {details["Hospital Type"] || "N/A"}
+            {details["Hospital Type"]}
           </Typography>
           <Stack direction="row" flexWrap="wrap" spacing="4px" mb={2}>
             <Typography
@@ -93,7 +90,7 @@ export default function HospitalCard({
             >
               {details["Hospital overall rating"] === "Not Available"
                 ? 0
-                : details["Hospital overall rating"] || 0}
+                : details["Hospital overall rating"]}
             </Typography>
           </Stack>
         </Box>
@@ -128,23 +125,22 @@ export default function HospitalCard({
           {booking && (
             <Stack direction="row" spacing={1} mt={{ xs: 2, md: 0 }}>
               <Chip
-                label={
-                  details.bookingTime || "Unknown Time"
-                }
+                label={details.bookingTime}
                 variant="outlined"
                 color="primary"
-                sx={{ borderRadius: 1, fontSize: 14 }}
+                sx={{
+                  borderRadius: 1,
+                  fontSize: 14,
+                }}
               />
-
               <Chip
-                label={
-                  details.bookingDate && isValid(parseISO(details.bookingDate))
-                    ? format(parseISO(details.bookingDate), "dd MMMM yyyy")
-                    : "Unknown Date"
-                }
+                label={format(new Date(details.bookingDate), "dd MMMM yyyy")}
                 variant="outlined"
                 color="success"
-                sx={{ borderRadius: 1, fontSize: 14 }}
+                sx={{
+                  borderRadius: 1,
+                  fontSize: 14,
+                }}
               />
             </Stack>
           )}
@@ -161,4 +157,3 @@ export default function HospitalCard({
     </Box>
   );
 }
-
