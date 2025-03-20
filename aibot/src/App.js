@@ -1,20 +1,18 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Chatbot, { History } from "./component/Chatbot/Chatbot";
 
-import Chatbot from "./component/Chatbot/Chatbot";
-// import ReactDOM from "react-dom";
-// import { BrowserRouter } from "react-router-dom";
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <Chatbot />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Chatbot />} />
+        <Route path="/history" element={<History />} />
+      </Routes>
+    </Router>
   );
-}
-// ReactDOM.render(
-//   <BrowserRouter>
-//     <App />
-//   </BrowserRouter>,
-//   document.getElementById("root")
-// );
+};
 
 export default App;
+
+
